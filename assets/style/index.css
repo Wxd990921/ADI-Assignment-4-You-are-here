@@ -7,9 +7,7 @@ html {
 body {
     height: 100%;
     margin: 0px;
-    padding: 0px;
-    font-family: 'Kanit', serif;
-    background-color: #fefefe;
+    padding: 0px
 }
 #container {
     height: 100%;

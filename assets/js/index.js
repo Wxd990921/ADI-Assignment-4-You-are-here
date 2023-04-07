@@ -1,27 +1,34 @@
 'use strict';
+mapboxgl.accessToken = 'pk.eyJ1IjoiMTE2NTUyNDY3OSIsImEiOiJjbGc1NzBibTcwMDU4M2ZvMWtzbWZ4cHRhIn0.fq_sCeFbafR7CPv2WXdbsQ';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11'
+});
+const point = new mapboxgl.Point();
+map.setCenter([point, 15]);
+map.scrollZoom.setWheelZoomRate(1 / 450);
+map.addControl(new mapboxgl.OverviewMapControl());
+map.addControl(new mapboxgl.MapTypeControl());
+map.addControl(new mapboxgl.NavigationControl());
+var opts = { offset: new mapboxgl.Size(90, 30) }
+map.addControl(new mapboxgl.ScaleControl(opts));
 
-let map = new GMap.Map("container"); 
-let point = new GMap.Point(); 
-map.centerAndZoom(point, 15); 
-map.enableScrollWheelZoom(true);
-map.addControl(new GMap.OverviewMapControl());
-map.addControl(new GMap.MapTypeControl());
-map.addControl(new GMap.NavigationControl());
-let opts = {offset: new GMap.Size(90, 30)}
-map.addControl(new GMap.ScaleControl(opts));
-let geolocation = new GMap.Geolocation();
-geolocation.getCurrentPosition(function(r){
-    if(this.getStatus() == GMap_STATUS_SUCCESS){
-        let mk = new GMap.Marker(r.point);
-        map.addOverlay(mk);
-        map.panTo(r.point);
-        let latCurrent = r.point.lat;
-        let lngCurrent = r.point.lng;
-        alert('Your position:'+r.point.lng+','+r.point.lat);
-        location.href = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCVuZV7iNeZdEvd11il7HfFynuYA0ulrEc&callback=initMap" + latCurrent + "," + lngCurrent + 
-        "&destination=30.4325,111.182311&mode=driving&region=adress&output=html";
-    }
-    else {
-        alert('failed'+this.getStatus());
-    }        
+const geolocate = new mapboxgl.GeolocateControl({
+    positionOptions: {
+        enableHighAccuracy: true
+    },
+    trackUserLocation: true
+});
+map.addControl(geolocate);
+
+geolocate.on('trackuserlocationstart', () => {
+    console.log('A trackuserlocationstart event has occurred.');
+});
+
+geolocate.on('trackuserlocationend', () => {
+    console.log('A trackuserlocationend event has occurred.');
+});
+
+geolocate.on('geolocate', () => {
+    console.log('A geolocate event has occurred.');
 });
